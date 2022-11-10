@@ -292,6 +292,16 @@ Function GetExtensionsNoPeriod(addPy)
     Next
 End Function
 
+Sub WriteWinExe(baseName)
+    Dim filespec
+    Dim shimSrcFile
+    filespec = strDirShims &"\"& baseName &".exe"
+    shimSrcFile = strPyenvHome &"\bin\shim.exe"
+    If Not objfs.FileExists(filespec) Then
+        objfs.CopyFile shimSrcFile, filespec, True
+    End If
+End Sub
+
 ' pyenv - bin - windows
 Sub WriteWinScript(baseName)
     ' WScript.echo "kkotari: pyenv-lib.vbs write win script..!"
@@ -365,7 +375,8 @@ Sub Rehash()
             ' WScript.echo "kkotari: pyenv-lib.vbs rehash for winBinDir"
             If exts.Exists(LCase(objfs.GetExtensionName(file))) Then
                 baseName = objfs.GetBaseName(file)
-                WriteWinScript baseName
+                ' WriteWinScript baseName
+                WriteWinExe baseName
                 WriteLinuxScript baseName
             End If
         Next
@@ -375,7 +386,8 @@ Sub Rehash()
                 ' WScript.echo "kkotari: pyenv-lib.vbs rehash for winBinDir\Scripts"
                 If exts.Exists(LCase(objfs.GetExtensionName(file))) Then
                     baseName = objfs.GetBaseName(file)
-                    WriteWinScript baseName
+                    ' WriteWinScript baseName
+                    WriteWinExe baseName
                     WriteLinuxScript baseName
                 End If
             Next
